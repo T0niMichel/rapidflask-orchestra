@@ -13,7 +13,7 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')
     PREFERRED_URL_SCHEME = 'https'
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
-    POSTS_PER_PAGE=os.environ.get('POSTS_PER_PAGE')
+    POSTS_PER_PAGE = os.environ.get('POSTS_PER_PAGE')
 
     MAIL_SERVER = os.environ.get('MAIL_SERVER')
     MAIL_PORT = os.environ.get('MAIL_PORT')
@@ -43,42 +43,9 @@ class Config:
     REDIS_URL = 'redis://{0}:{1}'
     REDIS_DATABASE = 5
 
-
-
-
-
-
-
-    """
-    RAUTH CONFIG 4 GOOGLE
-    https://github.com/joelverhagen/flask-rauth/blob/master/example/google.py
-    """
-    GOOGLE_CONSUMER_KEY = os.environ.get('GOOGLE_CONSUMER_KEY') or 'your_conumser_key'
-    GOOGLE_CONSUMER_SECRET = os.environ.get('GOOGLE_CONSUMER_SECRET') or 'your_conumser_secret'
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'just a secret key, to confound the bad guys'
-    """
-    http://blog.miguelgrinberg.com/post/oauth-authentication-with-flask
-
-    The OAuthSignIn base class defines the structure that the subclasses that implement each provider must follow.
-    The constructor initializes the provider's name, and the application id and secret assigned by it,
-    which are obtained from the configuration. Below you can see how the example application is configured
-    (of course you will need to replace these codes with your own when you try this application)
-    """
-    OAUTH_CREDENTIALS = {
-        'facebook': {
-            'id': 'blabla',
-            'secret': 'blabla'
-        },
-        'twitter': {
-            'id': 'blabla',
-            'secret': 'blabla'
-        },
-        'google': {
-            'id': 'blabla.apps.googleusercontent.com',
-            'secret': 'blabla'
-        }
-    }
-
+    GOOGLE_CONSUMER_KEY = os.environ.get('GOOGLE_CONSUMER_KEY')
+    GOOGLE_CONSUMER_SECRET = os.environ.get('GOOGLE_CONSUMER_SECRET')
+    SECRET_KEY = os.environ.get('SECRET_KEY')
 
 
     @staticmethod
@@ -94,9 +61,11 @@ class DevelopmentConfig(Config):
     DB_SERVICE_DEV = os.environ.get('DB_SERVICE_DEV')
     DB_PORT_DEV = os.environ.get('DB_PORT_DEV')
 
-    SQLALCHEMY_DATABASE_URI = 'postgresql://{0}:{1}@{2}:{3}/{4}'.format(
-        DB_USER_DEV, DB_PASS_DEV, DB_SERVICE_DEV, DB_PORT_DEV, DB_NAME_DEV
-    )
+    SQLALCHEMY_DATABASE_URI = \
+        'sqlite:///' + os.path.join(basedir, "data-devel.sqlite")
+#    SQLALCHEMY_DATABASE_URI = 'postgresql://{0}:{1}@{2}:{3}/{4}'.format(
+#        DB_USER_DEV, DB_PASS_DEV, DB_SERVICE_DEV, DB_PORT_DEV, DB_NAME_DEV
+#    )
 
 class TestingConfig(Config):
     TESTING = True
@@ -107,9 +76,11 @@ class TestingConfig(Config):
     DB_SERVICE_TESTS = os.environ.get('DB_SERVICE_TESTS')
     DB_PORT_TESTS = os.environ.get('DB_PORT_TESTS')
 
-    SQLALCHEMY_DATABASE_URI = 'postgresql://{0}:{1}@{2}:{3}/{4}'.format(
-        DB_USER_TESTS, DB_PASS_TESTS, DB_SERVICE_TESTS, DB_PORT_TESTS, DB_NAME_TESTS
-    )
+    SQLALCHEMY_DATABASE_URI = \
+        'sqlite:///' + os.path.join(basedir, "data-test.sqlite")
+#    SQLALCHEMY_DATABASE_URI = 'postgresql://{0}:{1}@{2}:{3}/{4}'.format(
+#        DB_USER_TESTS, DB_PASS_TESTS, DB_SERVICE_TESTS, DB_PORT_TESTS, DB_NAME_TESTS
+#    )
 
 class ProductionConfig(Config):
     DEBUG = False
@@ -120,14 +91,16 @@ class ProductionConfig(Config):
     DB_SERVICE_PROD = os.environ.get('DB_SERVICE_PROD')
     DB_PORT_PROD = os.environ.get('DB_PORT_PROD')
 
-    SQLALCHEMY_DATABASE_URI = 'postgresql://{0}:{1}@{2}:{3}/{4}'.format(
-        DB_USER_PROD, DB_PASS_PROD, DB_SERVICE_PROD, DB_PORT_PROD, DB_NAME_PROD
-    )
+    SQLALCHEMY_DATABASE_URI = \
+        'sqlite:///' + os.path.join(basedir, "data-prod.sqlite")
+#    SQLALCHEMY_DATABASE_URI = 'postgresql://{0}:{1}@{2}:{3}/{4}'.format(
+#        DB_USER_PROD, DB_PASS_PROD, DB_SERVICE_PROD, DB_PORT_PROD, DB_NAME_PROD
+#    )
+
     @classmethod
     def init_app(cls, app):
         Config.init_app(app)
 
-        # email errors to the administrators
         import logging
         from logging.handlers import SMTPHandler
         credentials = None

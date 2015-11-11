@@ -1,0 +1,14 @@
+# coding=utf-8Some one with this email {{ contact_email.data }}
+wants to contact you.
+
+This message was left for your company:
+
+
+    {{ contact_message.data }}
+
+
+Sincerely,
+
+The DOJO Team
+
+Note: replies to this email address are not monitored.
