@@ -2,20 +2,16 @@ dojo:
   restart: always
   build: ./dojo
   expose:
-    - "6423"
-  #ports:
-  #  - "8000:8000"
+    - "52323"
   links:
     - redis
     - postgres
   volumes:
-    #- app/static:/usr/src/rapidflask/app/static:rw
     - ./dojo:/srv/dojo
-  #env_file: .env
+  env_file: .env
   working_dir: /srv/dojo/
-  command: /usr/src/rapidflask/rAPPenv/bin/gunicorn -w 2 -b :8000 manage:app
-  #manage.py runserver -h 0.0.0.0 -p 6423 -r -d
-  #gunicorn -w 3 -b :6423 manage:app
+  command: /usr/src/rapidflask/rAPPenv/bin/gunicorn -w 2 -b :52323 manage:app
+
 
 nginx:
   restart: always
