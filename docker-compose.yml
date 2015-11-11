@@ -1,4 +1,4 @@
-dojo:
+rapidflask:
   restart: always
   build: ./dojo
   expose:
@@ -7,9 +7,9 @@ dojo:
     - redis
     - postgres
   volumes:
-    - ./dojo:/srv/dojo
+    - ./dojo:/srv/rapidflask
   env_file: .env
-  working_dir: /srv/dojo/
+  working_dir: /srv/rapidflask/
   command: /usr/src/rapidflask/rAPPenv/bin/gunicorn -w 2 -b :52323 manage:app
 
 
@@ -21,9 +21,9 @@ nginx:
   volumes:
     - /www/static
   volumes_from:
-    - dojo
+    - rapidflask
   links:
-    - dojo:dojo
+    - rapidflask:rapidflask
 
 data:
   restart: "no"
