@@ -1,0 +1,7 @@
+#web:
+#  build: .
+#  links:
+#    - redis
+#    - postgres
+#  ports:
+#    - 8000:8000
