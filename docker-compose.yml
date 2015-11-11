@@ -7,7 +7,7 @@ rapidflask:
     - redis
     - postgres
   volumes:
-    - ./dojo:/srv/rapidflask
+    - ./rapidfalsk:/srv/rapidflask
   env_file: .env
   working_dir: /srv/rapidflask/
   command: /usr/src/rapidflask/rAPPenv/bin/gunicorn -w 2 -b :52323 manage:app
