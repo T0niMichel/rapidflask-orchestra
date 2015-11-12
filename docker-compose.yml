@@ -1,6 +1,6 @@
 rapidflask:
   restart: always
-  build: ./dojo
+  build: ./rapidflask
   expose:
     - "52323"
   links:
