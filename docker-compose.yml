@@ -25,22 +25,11 @@ nginx:
   links:
     - rapidflask:rapidflask
 
-data:
-  restart: "no"
-  image: postgres:latest
-  volumes:
-    - /var/lib/postgresql
-  command: "true"
-
 postgres:
   restart: always
-  image: postgres:latest
+  image: tonimichel:rapiddb
   environment:
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: postgres
     LC_ALL: C.UTF-8
-  volumes_from:
-    - data
   ports:
     - "5432:5432"
 
