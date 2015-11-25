@@ -1,2 +1,3 @@
 FROM tonimichel/rapidflask
-ONBUILD RUN rm /usr/src/rapidflask/config.py -f
+ONBUILD RUN chown rapidflask:rapidflask /srv/rapidflask/ -R
+ONBUILD RUN rm -rf /srv/rapidflask/migrations/
