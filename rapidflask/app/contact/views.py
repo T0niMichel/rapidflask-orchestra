@@ -50,7 +50,7 @@ To use the decorator just apply it to a function:
 This would limit the function to be called 23 times
 per 15 minutes.
 """
-__author__ = 'doj.ooo'
+__author__ = 'Toni Michel'
 
 from flask import render_template, request, flash
 
@@ -59,9 +59,7 @@ from .forms import ContactForm
 from app.email import send_email
 from app.decorators import *
 
-
 @contact.route('/', methods=['GET', 'POST'])
-@rate_limit(5, 60 * 60)
 def contact():
 	'''
 

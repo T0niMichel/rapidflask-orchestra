@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block title %}KUNGF.OOO{% endblock %}
+
+{% block page_content %}
+
+<div class="row">
+    <div class="page-header">
+        <h1>Hi, {% if current_user.is_authenticated %}
+            {{ current_user.username }}
+            {% else %}
+            Stranger
+            {% endif %}
+        </h1>
+    </div>
+    {% if current_user.is_authenticated %}
+    <div class="col-md-4 col-sm-6 col-xs-12">
+        <h3>We are currently under construction.</h3>
+    </div>
+    {%else%}
+    <div class="col-md-4 col-sm-6 col-xs-12">
+        <h3>We are currently under construction.</h3>
+
+        <p> Please stand by. </p>
+    </div>
+    {%endif%}
+</div>
+<div class="row">
+    <div>
+        {% if current_user.can(Permission.WRITE_ARTICLES) %}
+            You can write articles
+        {% endif %}
+    </div>
+    <div class="tour-tabs">
+        <ul class="nav nav-tabs">
+            <li
+                    {% if not show_followed %} class="active" {% endif %}><a href="{{ url_for('.show_all') }}">All</a>
+            </li>
+            {% if current_user.is_authenticated %}
+            <li
+                    {% if show_followed %} class="active" {% endif %}><a
+                    href="{{ url_for('.show_followed') }}">Followers</a></li>
+            {% endif %}
+        </ul>
+
+    </div>
+    {% if pagination %}
+    <div class="pagination">
+        {{ macros.pagination_widget(pagination, '.index') }}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+
+{% block footer %}
+{{ super() }}
+{% include 'footer.html' without context %}
+{% endblock %}

@@ -33,48 +33,43 @@ in this function.
 :return: returns an app object
 
 """
-__author__ = 'doj.ooo'
+__author__ = 'Toni Michel'
 
 from flask import Flask, render_template, jsonify, g
-from flask.ext.bootstrap import Bootstrap
-from flask.ext.mail import Mail
 
 # moment.js for ltc of consumers browser
 from flask.ext.moment import Moment
+moment = Moment()
 
 # sqlalchemy is going to complete Our Flask(view/controller) with the Model part
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.login import LoginManager
-from config import config
+db = SQLAlchemy()
 
 from flask_redis import FlaskRedis
-
 redis = FlaskRedis()
 
-# gunicorn proxyfix
+# Gunicorn proxyfix
 from werkzeug.contrib.fixers import ProxyFix
 
+#Mail support for the system
+from flask.ext.mail import Mail
+mail = Mail()
 
 # mail logging of errors
 import logging
 from logging.handlers import SMTPHandler
 
-
+from flask.ext.bootstrap import Bootstrap
 bootstrap = Bootstrap()
-mail = Mail()
-moment = Moment()
-db = SQLAlchemy()
-login_manager = LoginManager()
-login_manager.session_protection = 'strong'
-login_manager.login_view = 'auth.login'  # endpoint for login
-from flask.ext.pagedown import PageDown
 
+from flask_wtf.csrf import CsrfProtect
+csrf = CsrfProtect()
+
+from flask.ext.pagedown import PageDown
 pagedown = PageDown()
 
-# http://flask-wtf.readthedocs.org/en/latest/csrf.html
-from flask_wtf.csrf import CsrfProtect
-
-csrf = CsrfProtect()
+#import our own configuration
+from config import config
 
 
 def create_app(config_name):
@@ -86,28 +81,32 @@ def create_app(config_name):
     mail.init_app(app)
     moment.init_app(app)
 
-    login_manager.init_app(app)
     redis.init_app(app)
     pagedown.init_app(app)
-    # To enable CSRF protection for all your view handlers, you need to enable the CsrfProtect module:
-    #    csrf.init_app(app)
+
+    # Disabled for Development!
+    #
+    # To enable CSRF protection for all your view handlers,
+    # you need to enable the CsrfProtect module:
+    #csrf.init_app(app)
+
     app.wsgi_app = ProxyFix(app.wsgi_app)
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
-    from .users import usersbp as users
-    app.register_blueprint(users)
+    from .base import base as base_blueprint
+    app.register_blueprint(auth_blueprint, url_prefix='/base')
 
-    from .auth import auth as auth_blueprint
-    app.register_blueprint(auth_blueprint, url_prefix='/auth')
+    from .native import native as native_blueprint
+    app.register_blueprint(auth_blueprint, url_prefix='/html')
 
     from .contact import contact as contact_blueprint
     app.register_blueprint(contact_blueprint, url_prefix='/contact')
 
     db.init_app(app)
-    # register an after request handler
 
+    # register an after request handler
     @app.after_request
     def after_request(rv):
         """

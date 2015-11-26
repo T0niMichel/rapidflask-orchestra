@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block title %}KUNGF.OOO{% endblock %}
+
+{% block page_content %}
+
+
+{% endblock %}
+
+
+{% block footer %}
+{{ super() }}
+{% include 'footer.html' without context %}
+{% endblock %}

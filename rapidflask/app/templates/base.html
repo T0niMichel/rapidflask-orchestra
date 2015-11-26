@@ -1,0 +1,113 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/fixes.html" as fixes %}
+{% import "bootstrap/google.html" as google %}
+
+{% block title %}KUNGF.OOO{% endblock %}
+
+{% block metas %}<!-- Contains all <meta> tags inside head. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=1.0 user-scalable=no">
+    <meta name="description" content="We are an innovative Startup. WE DO KUNGFOOO!">
+    {{ super() }}
+{% endblock %} <!-- end metas-->
+
+{% block styles %}
+    {{ super() }}
+    {#  loading added third party stylesheets for a nice look #}
+    {#
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='template_dev/css/bootstrap-social.css') }}">
+    <linking my own css file to this foo>
+    <link rel="stylesheet" type="text/css" href="{ { url_for('static', filename='css/font-awesome.css') } }">
+     #}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/typo.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/navbar.css') }}">
+    {# linking external stylesheets to our site #}
+    {# <link rel="stylesheet" href="https://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>  #}
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css">
+{% endblock styles %}
+
+{% block head %}{#  Contains the complete content of the <head> tag. #}
+    {# super needs to be called to inherit the contend of the extended template  #}
+    {{ super() }}
+    {{ fixes.ie8() }}
+{% endblock %}{#  end head  #}
+
+
+{% block navbar %}
+    {#Custom Navigationbar could be loaded here!#}
+    {% include 'temp_navbar.html' with context %}
+{% endblock %}
+
+
+{% block scripts %}
+
+    {# Contains all < script > tags at the end of the body.  #}
+    {# loading external scripts to our site  #}
+    {# script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js">< /script  #}
+    {# super loads the content of "bootstrap/base.html" that this file extends.  #}
+    {{ super() }}
+    {#  moment from flask_moment imports moment.js
+    to estimate the local time of consumer via his or her browser  #}
+    {{ moment.include_moment() }}
+    {{google.analytics(account="UA-70684154-1")}}
+{% endblock %} <!-- end scripts -->
+
+
+{% block content %} <!-- begin of content block. here goes the page! -->
+    {{ super() }}
+    {#  loading icons  #}
+    <link rel="shortcut icon" href="{{ url_for('static', filename='template_dev/img/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='template_dev/img/favicon.ico') }}" type="image/x-icon">
+    {#  <link rel="shortcut icon" href="{ { url_for('static', filename='template_dev/img/Bildmarke_Navbar.svg') } }">  #}
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+        </div>
+    {% endfor %}
+    <div class = "container">
+        <div class="row">
+            {% block page_content %}
+
+            {% endblock %}
+        </div>
+        <div class="row">
+            {% block footer %}
+            {% endblock %}
+        </div>
+    </div><!-- /.container -->
+
+{% endblock %}<!-- end content -->
+
+
+
+{% macro render_field(field) %}
+  <dt>{{ field.label }}
+  <dd>{{ field(**kwargs)|safe }}
+  {% if field.errors %}
+    <ul class=errors>
+    {% for error in field.errors %}
+      <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+  </dd>
+{% endmacro %}
+
+{#
+{% macro with_errors(field) %}
+    <div class="form_field">
+    {% if field.errors %}
+        {% set css_class = 'has_error ' + kwargs.pop('class', '') %}
+        { { field(class=css_class, **kwargs) } }
+        <ul class="errors">{% for error in field.errors %}<li>{{ error|e }}</li>{% endfor %}</ul>
+    {% else %}
+        { { field(**kwargs) } }
+    {% endif %}
+    </div>
+{% endmacro %}
+#}
+
+{# Usage: {{ with_errors(form.field, style='font-weight: bold') }} #}

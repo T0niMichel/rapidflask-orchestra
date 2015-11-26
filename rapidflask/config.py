@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-__author__ = 'doj.ooo'
+__author__ = 'Toni Michel'
 
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))

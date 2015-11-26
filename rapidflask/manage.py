@@ -12,7 +12,7 @@
 >>> exit()
 
 """
-__author__ = 'doj.ooo'
+__author__ = 'Toni Michel'
 
 import os
 

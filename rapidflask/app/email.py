@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-__author__ = 'doj.ooo'
+__author__ = 'Miguel Grinberg'
 
 from flask.ext.mail import Message
 from threading import Thread

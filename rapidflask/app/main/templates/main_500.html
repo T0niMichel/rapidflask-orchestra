@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}KUNGF.OOO{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>500 Internal Server Error</h1>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block footer %}
+{{ super() }}
+{% include 'footer.html' without context %}
+{% endblock %}

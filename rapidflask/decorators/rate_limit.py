@@ -131,11 +131,11 @@ This snippet by Armin Ronacher can be used freely for anything
 you like. Consider it public domain.
 
 """
-__author__ = 'doj.ooo'
+__author__ = 'Toni Michel'
 
 import time
 from functools import update_wrapper
-from flask import request, g
+from flask import request, g, jsonify
 from app import redis
 
 
@@ -169,10 +169,15 @@ def get_view_rate_limit():
 
 
 def on_over_limit(limit):
-    return 'You hit the rate limit', 400
+    response = jsonify(
+        {'status': 429, 'error': 'too many requests',
+         'message': 'You have exceeded your request rate'})
+    response.status_code = 429
+    return response
 
 
-def ratelimit(limit, per=300, send_x_headers=True,
+
+def rate_limit(limit, per=300, send_x_headers=True,
               over_limit=on_over_limit,
               scope_func=lambda: request.remote_addr,
               key_func=lambda: request.endpoint):

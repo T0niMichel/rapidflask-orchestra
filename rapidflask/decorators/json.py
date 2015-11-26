@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-__author__ = 'doj.ooo'
+__author__ = 'Miguel Grinberg'
 import functools
 
 from flask import jsonify
